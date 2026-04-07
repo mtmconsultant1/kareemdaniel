@@ -15,9 +15,7 @@ export default function Home() {
 
       <div className="px-6">
         <SectionHeader
-          tag="THE KAREEM CHRONICLES"
-          titleLine1="From the Warehouse Floor"
-          titleLine2="to the AI War Room"
+          title="The Kareem Chronicles"
           subtitle="Ten years on the concrete. A hip replacement. A community built from nothing. A discovery that changed everything. Five acts, one arc."
         />
       </div>
@@ -28,9 +26,7 @@ export default function Home() {
 
       <div className="px-6">
         <SectionHeader
-          tag="THE INTELLIGENCE GALLERY"
-          titleLine1="Not a Portfolio."
-          titleLine2="A Live Feed."
+          title="The Intelligence Gallery"
           subtitle="The Armory had tools. This has brains. Five active instances, each trained on a different domain. Click one. Start a conversation."
         />
       </div>
@@ -41,10 +37,8 @@ export default function Home() {
 
       <div className="px-6">
         <SectionHeader
-          tag="THE OPEN CHANNEL"
-          titleLine1="You Saw the Tools."
-          titleLine2="Meet the Builder"
-          subtitle="Whether you want an AI agent for your business, a collaborator who understands the grind and the algorithm, or just want to talk. The line is open."
+          title="The Open Channel"
+          subtitle="You saw the tools. You met the intelligence. Now meet the builder. Whether you want an AI agent, a collaborator, or just to talk. The line is open."
         />
       </div>
 
