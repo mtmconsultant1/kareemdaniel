@@ -83,10 +83,7 @@ export default function IntelligenceGallery() {
   const currentAgent = agents.find((a) => a.id === activeAgent);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 200);
-    return () => clearInterval(timer);
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleAgentClick = (agentId: string) => {
