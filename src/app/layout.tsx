@@ -18,7 +18,7 @@ const merriweather = Merriweather({
 
 export const metadata: Metadata = {
   title: "KAREEM DANIEL | The Architect",
-  description: "From the warehouse floor to the AI war room. The Kareem Chronicles — where intelligence meets experience.",
+  description: "From the warehouse floor to the AI war room. The Kareem Chronicles -- where intelligence meets experience.",
   keywords: ["Kareem Daniel", "MT Media AI", "AI Consultant", "The Architect", "Golden Legion"],
 };
 
@@ -28,14 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" style={{ cursor: "none" }}>
+    <html lang="en" style={{ cursor: "none" }} className={`${playfair.variable} ${merriweather.variable}`}>
       <head>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
       </head>
-      <body
-        className={`${playfair.variable} ${merriweather.variable} antialiased`}
-        style={{ cursor: "none" }}
-      >
+      <body style={{ cursor: "none" }} className="antialiased">
         {children}
       </body>
     </html>
