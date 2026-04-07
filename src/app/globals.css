@@ -13,10 +13,12 @@
     --mtm-muted: #47464B;
     --mtm-glass-blur: 24px;
     --mtm-ease: cubic-bezier(0.4,0,0.2,1);
-    --font-playfair: 'Playfair Display', serif;
-    --font-merriweather: 'Merriweather', serif;
-    --font-ui: 'Georgia', serif;
+    --font-playfair: var(--font-playfair), serif;
+    --font-merriweather: var(--font-merriweather), Georgia, serif;
+    --font-ui: Georgia, serif;
+    --font-footer: Georgia, serif;
     --font-tech: 'Times New Roman', monospace;
+    --font-body: 'Merriweather', Georgia, serif;
   }
 
   *::selection {

@@ -15,7 +15,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: "#47464B", fontFamily: "var(--font-tech)" }}>
+            <h4 className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: "#47464B", fontFamily: "var(--font-ui)" }}>
               Navigation
             </h4>
             <div className="flex flex-col gap-2">
@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: "#47464B", fontFamily: "var(--font-tech)" }}>
+            <h4 className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: "#47464B", fontFamily: "var(--font-ui)" }}>
               The MTM Ecosystem
             </h4>
             <div className="flex flex-col gap-2">
@@ -46,10 +46,10 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-2" style={{ paddingTop: "1.5rem" }}>
-          <p className="text-xs tracking-wider" style={{ color: "#47464B", fontFamily: "var(--font-tech)", fontSize: "0.65rem" }}>
+          <p className="text-xs tracking-wider" style={{ color: "#47464B", fontFamily: "var(--font-ui)", fontSize: "0.65rem" }}>
             Built in the grind. Wired in the quiet. Ever evolving.
           </p>
-          <p className="text-xs tracking-wider" style={{ color: "#47464B", fontFamily: "var(--font-tech)", fontSize: "0.65rem" }}>
+          <p className="text-xs tracking-wider" style={{ color: "#47464B", fontFamily: "var(--font-ui)", fontSize: "0.65rem" }}>
             MT MEDIA AI | MODERN TOUCH MEDIA
           </p>
         </div>
