@@ -21,7 +21,7 @@ export default function SectionHeader({
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.8 }}
     >
-      {/* ECHO: Containment Field — subtle glass pill, no borders */}
+      {/* ECHO: Containment Field: subtle glass pill, no borders */}
       <div
         className="inline-block px-5 py-3 rounded-full mb-6"
         style={{

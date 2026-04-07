@@ -147,7 +147,7 @@ export default function GalaxyBackground() {
       ctx.clearRect(0, 0, w, h)
 
       // ============================
-      // 1. NEBULA CLOUDS — slow cosmic drift + breathing
+      // 1. NEBULA CLOUDS: slow cosmic drift + breathing
       // ============================
       for (const n of nebulaeRef.current) {
         n.phase += n.speed
@@ -174,7 +174,7 @@ export default function GalaxyBackground() {
       }
 
       // ============================
-      // 2. TOP-DOWN SOLAR RADIANCE — the crown's light
+      // 2. TOP-DOWN SOLAR RADIANCE: the crown's light
       // ============================
       const sunX = w * 0.5
       const sunY = -h * 0.05
@@ -188,7 +188,7 @@ export default function GalaxyBackground() {
       ctx.fillRect(0, 0, w, h)
 
       // ============================
-      // 3. BOTTOM WARMTH — rising energy
+      // 3. BOTTOM WARMTH: rising energy
       // ============================
       const bottomGlow = ctx.createRadialGradient(
         w * 0.5, h * 1.08, 0,
@@ -201,7 +201,7 @@ export default function GalaxyBackground() {
       ctx.fillRect(0, 0, w, h)
 
       // ============================
-      // 4. SOLAR FLARES — emanating from the crown
+      // 4. SOLAR FLARES: emanating from the crown
       // ============================
       for (const f of flaresRef.current) {
         // Spawn new flares organically
@@ -274,7 +274,7 @@ export default function GalaxyBackground() {
       }
 
       // ============================
-      // 6. STARS — twinkling with gold halos
+      // 6. STARS: twinkling with gold halos
       // ============================
       for (const star of starsRef.current) {
         star.a += star.s
@@ -283,7 +283,7 @@ export default function GalaxyBackground() {
         const alpha = 0.15 + (twinkle + 1) * 0.425
 
         if (star.g) {
-          // Gold halo — soft, large
+          // Gold halo: soft, large
           const haloR = star.r * (3.5 + twinkle * 1.5)
           const haloGrad = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, haloR)
           haloGrad.addColorStop(0, `rgba(212,175,55,${alpha * 0.1})`)
@@ -295,7 +295,7 @@ export default function GalaxyBackground() {
           ctx.fill()
         }
 
-        // Star core — bright center
+        // Star core: bright center
         ctx.beginPath()
         ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2)
         ctx.fillStyle = star.g
@@ -360,7 +360,7 @@ export default function GalaxyBackground() {
         ctx.arc(c.x, c.y, 6, 0, Math.PI * 2)
         ctx.fill()
 
-        // Comet tail — golden trail
+        // Comet tail: golden trail
         const tailGrad = ctx.createLinearGradient(c.x, c.y, ex, ey)
         tailGrad.addColorStop(0, `rgba(212,175,55,${0.2 * c.life})`)
         tailGrad.addColorStop(0.2, `rgba(212,175,55,${0.08 * c.life})`)
@@ -373,7 +373,7 @@ export default function GalaxyBackground() {
         ctx.lineTo(ex, ey)
         ctx.stroke()
 
-        // Secondary thin tail — wispy gold
+        // Secondary thin tail: wispy gold
         const wispyAngle = tailAngle + (Math.random() - 0.5) * 0.15
         const wex = c.x + Math.cos(wispyAngle) * tailLen * 0.6
         const wey = c.y + Math.sin(wispyAngle) * tailLen * 0.6
@@ -435,7 +435,7 @@ export default function GalaxyBackground() {
       </div>
 
       {/* ============================================ */}
-      {/* ACT 2: Main Galaxy — deep space backdrop     */}
+      {/* ACT 2: Main Galaxy: deep space backdrop */}
       {/* ============================================ */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -460,7 +460,7 @@ export default function GalaxyBackground() {
       </div>
 
       {/* ============================================ */}
-      {/* ACT 3: Earth — Calm Before the Storm (70-75%)*/}
+      {/* ACT 3: Earth: Calm Before the Storm (70-75%) */}
       {/* ============================================ */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -485,7 +485,7 @@ export default function GalaxyBackground() {
       </div>
 
       {/* ============================================ */}
-      {/* ACT 4: AI Impact — The Storm (90-95%)        */}
+      {/* ACT 4: AI Impact: The Storm (90-95%) */}
       {/* ============================================ */}
       <div
         className="fixed inset-0 pointer-events-none"
@@ -510,7 +510,7 @@ export default function GalaxyBackground() {
       </div>
 
       {/* ============================================ */}
-      {/* LIGHT OVERLAY — top-down + bottom-up         */}
+      {/* LIGHT OVERLAY: top-down + bottom-up */}
       {/* ============================================ */}
       <div
         className="fixed inset-0 pointer-events-none"

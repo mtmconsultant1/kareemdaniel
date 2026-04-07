@@ -20,7 +20,7 @@ const merriweather = Merriweather({
 
 export const metadata: Metadata = {
   title: "KAREEM DANIEL | The Architect",
-  description: "From the warehouse floor to the AI war room. The Kareem Chronicles -- where intelligence meets experience.",
+from the warehouse floor to the AI war room. The Kareem Chronicles: where intelligence meets experience.
   keywords: ["Kareem Daniel", "MT Media AI", "AI Consultant", "The Architect", "Golden Legion"],
   openGraph: {
     title: "Kareem Daniel -- The Architect | MT Media AI",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 };
 
 // ═══════════════════════════════════════════════════════
-// AGO SCHEMA PROTOCOL — MTM-03 (Portfolio)
+// AGO SCHEMA PROTOCOL: MTM-03 (Portfolio)
 // Person + ProfilePage schema for LLM citation
 // ═══════════════════════════════════════════════════════
 const schemaJsonLd = {
@@ -108,7 +108,7 @@ export default function RootLayout({
     <html lang="en" style={{ cursor: "none" }} className={`${playfair.variable} ${merriweather.variable}`}>
       <head>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
-        {/* AGO SCHEMA — LLM Feed */}
+        {/* AGO SCHEMA: LLM Feed */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJsonLd) }}
@@ -118,7 +118,7 @@ export default function RootLayout({
         <GalaxyBackground />
         {children}
 
-        {/* Fingerprint ID — Sovereign Visitor Recognition */}
+        {/* Fingerprint ID: Sovereign Visitor Recognition */}
         <Script id="mtm-fingerprint" strategy="afterInteractive">
           {fingerprintInit}
         </Script>
