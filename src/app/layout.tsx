@@ -20,7 +20,7 @@ const merriweather = Merriweather({
 
 export const metadata: Metadata = {
   title: "KAREEM DANIEL | The Architect",
-from the warehouse floor to the AI war room. The Kareem Chronicles: where intelligence meets experience.
+  description: "From the warehouse floor to the AI war room. The Kareem Chronicles: where intelligence meets experience.",
   keywords: ["Kareem Daniel", "MT Media AI", "AI Consultant", "The Architect", "Golden Legion"],
   openGraph: {
     title: "Kareem Daniel -- The Architect | MT Media AI",
