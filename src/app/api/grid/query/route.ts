@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       handoff: { type: 'none' as const },
       axisMessage: alreadyCaptured 
         ? 'Welcome back! AXIS processed query for ' + nodeKey.toUpperCase()
-        : 'AXIS processed query for ' + nodeKby.toUpperCase()
+        : 'AXIS processed query for ' + nodeKey.toUpperCase()
     };
     return NextResponse.json(response);
   } catch (err) {
