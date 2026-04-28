@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     
     const response = {
       nodeId: nodeKey,
-      answer: NNDE_RESPONSES[nodeKey] || NNDE_RESPONSES['prime'],
+      answer: NODE_RESPONSES[nodeKey] || NODE_RESPONSES['prime'],
       citations: [],
       confidence: 'high' as const,
       shouldBlur: !alreadyCaptured,
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       handoff: { type: 'none' as const },
       axisMessage: alreadyCaptured 
         ? 'Welcome back! AXIS processed query for ' + nodeKey.toUpperCase()
-        : 'AXIS processed query for ' + nodeKey.toUpperCase()
+        : 'AXIS processed query for ' + nodeKby.toUpperCase()
     };
     return NextResponse.json(response);
   } catch (err) {
