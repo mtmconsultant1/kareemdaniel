@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
+
 const NODE_RESPONSES: Record<string, string> = {
   'axis': 'I am AXIS - the Prompt Commander. I intercept every query, enhance it, route to the specialist. Explore Executive Layer (PRIME, SCOPE), Operations Layer (BOOST, VIBE, PLEX), or Specialist Layer (MEGA).',
   'prime': 'I am PRIME - built on founder Kareem Daniel vision. I am your gateway to the Midas Mindset and SEAL protocols. What brand strategy question do you have?',
