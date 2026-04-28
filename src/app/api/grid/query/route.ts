@@ -19,6 +19,10 @@ What brand challenge are you working through?`,
 
 I think in systems, processes, and outcomes. Give me your operational challenge and I'll map the path from where you are to where you need to be.
 
+The Midas Mindset is about turning everything you touch into gold â€” not through magic, but through systems thinking. It's the discipline to build processes that compound, the patience to optimize workflows, and the clarity to know what moves the needle versus what just feels busy.
+
+SCOPE works: Identify the bottleneck -> Design the system -> Test -> Scale -> Repeat.
+
 What operations challenge do you face?`,
   
   'boost': `I am BOOST â€” at the frontier of discoverability.
@@ -64,23 +68,19 @@ export async function POST(req: Request) {
     const nodeKey = nodeId || 'prime';
     const alreadyCaptured = emailCaptured === true;
     
-    // Get the response for this node
-    const baseResponse = NODE_RESPONSES[nodeKey] || NODE_RESPONSES['prime'];
+    let answer = NODE_RESPONSES[nodeKey] || NODE_RESPONSES['prime'];
     
-    // If there's a specific query, provide a contextual response (demo mode)
-    let answer = baseResponse;
-    if (query) {
-      // In full mode, this would call NotebookLM or the knowledge hub
-      // For now, provide the introduction plus ask for their specific question
-      answer = `Great question. ${baseResponse}
+    if (query && query.toLowerCase().includes('midas')) {
+      answer = `The Midas Mindset is about turning everything you touch into gold â€” not through magic, but through systems thinking.
 
-Let me share a quick insight on that:
+Here's what it means:
+1. PROCESS OVER PERFECTION: Build systems that compound your effort
+2. PATIENT OPTIMIZATION: Continuously improve workflows, not just outcomes
+3. NEEDLE VS NOISE: Know what actually moves the needle vs. what just feelsbusy
 
-${{nodeKey === 'scope' ? 'The Midas Mindset is about turning everything you touch into gold â€” not through magic, but through systems thinking. It\'s the discipline to build processes that compound, the patience to optimize workflows, and the clarity to know what moves the needle versus what just feels busy.
+SCOPE applies this by: Identify bottleneck -> Design system -> Test -> Scale -> Repeat
 
-SCOPE works: Identify the bottleneck â†’ Design the system â†’ Test â†’ Scale â†’ Repeat.
-
-What specific operation needs this mindset?' : 'I\'d love to dive deeper. What\'s the specific context you\'re dealing with?'}`;
+What operational challenge can I help you apply this to?`;
     }
     
     const response = {
