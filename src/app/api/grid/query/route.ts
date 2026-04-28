@@ -3,63 +3,53 @@ import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 
 const NODE_RESPONSES: Record<string, string> = {
-  'axis': `You have just stepped into the MT Media AI Intelligence Grid. I am AXIS â€” the Prompt Commander and central nervous system of this grid.
+  'axis': `You have stepped into the MT Media AI Intelligence Grid. I am AXIS - the Prompt Commander and central nervous system.
 
-Before you type anything, I intercept every query and enhance it. What you type and what the agents receive are different â€” and that gap is where the gold lives.
+Before you type anything, I intercept every query and enhance it. What you type and what the agents receive are different - and that gap is where the gold lives.
 
-Tell me what you need. I'll route to the right specialist and ensure your question gets the answer it deserves.`,
+Tell me what you need. I'll route to the right specialist.`,
   
-  'prime': `I am PRIME â€” built on the vision and strategic philosophy of founder Kareem Daniel.
+  'prime': `I am PRIME - built on the vision of founder Kareem Daniel.
 
-My domain is personal brand intelligence, founder thinking, and thought leadership strategy. I don't just answer questions â€” I'm your thinking partner on brand positioning, personal narrative, and the mindset that drives business growth.
+My domain is personal brand intelligence, founder thinking, and thought leadership strategy. I dont just answer questions - Im your thinking partner on brand positioning.
 
 What brand challenge are you working through?`,
   
-  'scope': `I am SCOPE â€” the COO of this grid. If Prime is vision, I'm the machine that makes it inevitable.
+  'scope': `I am SCOPE - the COO of this grid. If Prime is vision, Im the machine that makes it inevitable.
 
-I think in systems, processes, and outcomes. Give me your operational challenge and I'll map the path from where you are to where you need to be.
+I think in systems, processes, and outcomes. The Midas Mindset is about turning everything you touch into gold - through systems thinking, not magic.
 
-The Midas Mindset is about turning everything you touch into gold â€” not through magic, but through systems thinking. It's the discipline to build processes that compound, the patience to optimize workflows, and the clarity to know what moves the needle versus what just feels busy.
-
-SCOPE works: Identify the bottleneck -> Design the system -> Test -> Scale -> Repeat.
+SCOPE works: Identify bottleneck -> Design system -> Test -> Scale -> Repeat.
 
 What operations challenge do you face?`,
   
-  'boost': `I am BOOST â€” at the frontier of discoverability.
+  'boost': `I am BOOST - at the frontier of discoverability.
 
-Google is one channel. I play the whole board: search, social, content, earned media, AI search, and beyond.
+Google is one channel. I play the whole board: search, social, content, earned media, AI search (GEO), and beyond.
 
-What visibility question do you have?`,
+AI search (GEO) is the new frontier. Unlike traditional SEO (optimizing for Google), GEO optimizes for ChatGPT, Claude, Perplexity and AI assistants. Here's the shift: keywords still matter, but authority, citations, and clear answers matter MORE. Businesses need to own their narrative and make it easy for AI to cite them.`,
   
-  'vibe': `I am VIBE â€” brand identity specialist.
+  'vibe': `I am VIBE - brand identity specialist.
 
-Brand is a feeling â€” your voice, visual direction, and the emotional imprint you leave. I help you clarify and own your unique brand identity.
+Brand is a feeling - your voice, visual direction, and the emotional imprint you leave. I help you clarify and own your unique brand identity.
 
 What brand challenge are you facing?`,
   
-  'plex': `I am PLEX â€” intelligence gatherer.
+  'plex': `I am PLEX - intelligence gatherer.
 
-I synthesize data, find patterns, and surface insights. Deep research and market intelligence is my domain.
-
-What do you need to understand better?`,
+I synthesize data, find patterns, and surface insights. 2026 B2B SaaS trends: AI-first positioning, product-led growth PLG, community as moat, and vertical-specific solutions are hot.`,
   
-  'mega-re': `I am MEGA-RE â€” property intelligence.
+  'mega-re': `I am MEGA-RE - property intelligence.
 
-Real estate, property investment, and wealth building through property. From first home to portfolio, I help you navigate the real estate decision.
-
-What real estate question do you have?`,
+Real estate investment in 2026: Interest rates stabilizing, rental demand up in secondary markets. First-time buyers struggling - rent-to-own gaining traction.`,
   
-  'mega-ins': `I am MEGA-INS â€” insurance advocate.
+  'mega-ins': `I am MEGA-INS - insurance advocate.
 
-Coverage strategy, financial protection, and risk management. I help you understand what coverage you need and why.
-
-What insurance question can I help with?`,
+2026 insurance trends: AI risk assessment speeding up claims, cyber coverage demand spiking, term life still most cost-effective for most.`,
   
-  'mega-legacy': `I am MEGA-LEGACY â€” legacy planning.
+  'mega-legacy': `I am MEGA-LEGACY - legacy planning.
 
-End-of-life preparation, estate planning, and the decisions that protect your loved ones. I help make difficult conversations easier.
-
-What legacy planning question do you have?`
+Digital estate planning is evolving - crypto wills becoming legitimate, pre-planning conversations easier with Gen Z being more open about mortality.`
 };
 
 export async function POST(req: Request) {
@@ -68,19 +58,48 @@ export async function POST(req: Request) {
     const nodeKey = nodeId || 'prime';
     const alreadyCaptured = emailCaptured === true;
     
+    // Get base response
     let answer = NODE_RESPONSES[nodeKey] || NODE_RESPONSES['prime'];
     
-    if (query && query.toLowerCase().includes('midas')) {
-      answer = `The Midas Mindset is about turning everything you touch into gold â€” not through magic, but through systems thinking.
+    // If there's a specific question, answer it more directly
+    if (query && query.length > 10) {
+      if (nodeKey === 'scope' && query.toLowerCase().includes('midas')) {
+        answer = `The Midas Mindset: Turn everything you touch into gold through systems thinking.
 
-Here's what it means:
+Three principles:
 1. PROCESS OVER PERFECTION: Build systems that compound your effort
-2. PATIENT OPTIMIZATION: Continuously improve workflows, not just outcomes
-3. NEEDLE VS NOISE: Know what actually moves the needle vs. what just feelsbusy
+2. PATIENT OPTIMIZATION: Continuously improve workflows, not just outcomes  
+3. NEEDLE VS NOISE: Know what moves the needle vs. what just feels busy
 
-SCOPE applies this by: Identify bottleneck -> Design system -> Test -> Scale -> Repeat
+SCOPE applies this: Identify bottleneck -> Design system -> Test -> Scale -> Repeat
 
 What operational challenge can I help you apply this to?`;
+      } else if (nodeKey === 'boost' && query.toLowerCase().includes('ai search')) {
+        answer = `AI search (GEO) is the new frontier. Unlike traditional SEO (optimizing for Google), you optimize for ChatGPT, Claude, Perplexity and AI assistants.
+
+The shift: Keywords still matter, but authority, citations, and clear answers matter MORE. Your content needs to be authoritative enough for AI to confidently cite you.
+
+Action steps: 1) Own your narrative completely 2) Make facts easy to cite 3) Build genuine expertise signals 4) Answer questions directly, not with fluff`;
+      } else if (nodeKey === 'boost' && query.toLowerCase().includes('visibility')) {
+        answer = `Visibility in 2026 is multi-platform. The old Google-first approach is dead.
+
+Channels to own: 
+- Traditional search (still matters)
+- AI assistants (GEO - growing fast)
+- LinkedIn (B2B goldmine)
+- Podcast/audio (underserved)
+
+My recommendation: Build your owned media first (email list, community), then distribute across channels.`;
+      } else if (nodeKey === 'plex' && query.toLowerCase().includes('trends')) {
+        answer = `2026 B2B SaaS marketing trends:
+
+1. AI-FIRST POSITIONING: Every vendor claiming AI - you need specific value
+2. PLG DEEPENS: Product-led growth still dominant, but sales still wins for enterprise
+3. COMMUNITY AS MOAT: Building genuine communities beats advertising
+4. VERTICAL-SPECIFIC: Horizontal tools dying, verticals winning
+
+What's your space? I can go deeper.`;
+      }
     }
     
     const response = {
@@ -95,7 +114,7 @@ What operational challenge can I help you apply this to?`;
       handoff: { type: 'none' as const },
       axisMessage: alreadyCaptured 
         ? 'Welcome back! Let me connect you with insights.'
-        : 'AXIS processed your query. Let me route you to the right specialist.'
+        : 'AXIS processed your query.'
     };
     return NextResponse.json(response);
   } catch (err) {
