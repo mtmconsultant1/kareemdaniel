@@ -3,113 +3,104 @@ import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 
 const NODE_RESPONSES: Record<string, string> = {
-  'axis': `You have stepped into the MT Media AI Intelligence Grid. I am AXIS - the Prompt Commander.`,
-  
-  'prime': `I am PRIME - built on founder Kareem Daniel's vision. Your brand strategy partner.`,
-  
-  'scope': `I am SCOPE - the COO. Systems, processes, outcomes. The Midas Mindset is about gold through systems thinking.`,
-  
-  'boost': `I am BOOST - discoverability across search, social, content, earned media, and AI search (GEO).`,
-  
-  'vibe': `I am VIBE - brand identity specialist. Brand is a feeling.`,
-  
-  'plex': `I am PLEX - intelligence gatherer and research specialist.`,
-  
-  'mega-re': `I am MEGA-RE - property intelligence expert.`,
-  
-  'mega-ins': `I am MEGA-INS - insurance and risk protection advocate.`,
-  
-  'mega-legacy': `I am MEGA-LEGACY - legacy and estate planning specialist.`
+  'axis': `AXIS - Prompt Commander`,
+  'prime': `PRIME - founder brand vision`,
+  'scope': `SCOPE - COO operations`,
+  'boost': `BOOST - discoverability across search, social, content, earned media, and AI search (GEO).`,
+  'vibe': `VIBE - brand identity`,
+  'plex': `PLEX - intelligence`,
+  'mega-re': `MEGA-RE - property`,
+  'mega-ins': `MEGA-INS - insurance`,
+  'mega-legacy': `MEGA-LEGACY - legacy`
 };
 
-// Query-specific responses
 const QUERY_HANDLERS: Record<string, Record<string, string>> = {
   'boost': {
-    'ai search': `AI search (GEO) is the new frontier. Unlike traditional SEO (optimizing for Google), you optimize for ChatGPT, Claude, Perplexity and AI assistants.
+    'ai search': `AI search (GEO) is the new frontier. Optimize for ChatGPT, Claude, Perplexity not just Google.
 
-The shift: Keywords still matter, but authority, citations, and clear answers matter MORE. 
+Shift: Keywords matter, but authority/citations matter MORE.
 
-Action steps: 
-1) Own your narrative completely 
-2) Make facts easy to cite 
-3) Build genuine expertise signals 
-4) Answer questions directly, not with fluff`,
+Action: 1) Own narrative 2) Make facts citable 3) Build expertise signals 4) Answer directly`,
     
     'e-e-a-t': `E-E-A-T = Experience, Expertise, Authoritativeness, Trustworthiness
 
-In 2026, Google evaluates content like a hiring manager:
-- EXPERIENCE: Have you actually done what you're talking about?
-- EXPERTISE: Do you have real credentials?
-- AUTHORITATIVENESS: Do others cite you as an authority?
-- TRUSTWORTHINESS: Is your site secure, transparent, accurate?
+2026 Google = hiring manager:
+- EXPERIENCE: Done what you talk about?
+- EXPERTISE: Real credentials?
+- AUTHORITATIVENESS: Others cite you?
+- TRUSTWORTHINESS: Site secure/accurate?
 
-For AI search: citations and clear attribution matter MORE than traditional SEO signals. Build your expertise paper trail.`,
+AI search cares about citations more than SEO signals.`,
     
-    'visibility': `Visibility in 2026 is multi-platform. The old Google-first approach is dead.
+    'visibility': `Multi-platform visibility in 2026:
 
-Channels to own: 
 - Traditional search (still matters)
-- AI assistants (GEO - growing fast)
+- AI assistants (GEO growing)
 - LinkedIn (B2B goldmine)
 - Podcast/audio
 
-Build owned media first (email list, community), then distribute.`,
+Build owned media first (email, community), then distribute.`,
     
-    'geo': `GEO (Generative Engine Optimization) = optimizing for AI assistants
+    'geo': `GEO = Generative Engine Optimization
 
-Unlike SEO (keyword density), GEO focuses on:
-- Clear, citable facts
-- Expert citations
-- Direct answers to questions
-- Original research/data
+Unlike SEO (keywords), GEO focuses on:
+- Clear citable facts
+- Expert citations  
+- Direct answers
+- Original research
 
-Your content must be authoritative enough for AI to confidently cite you as a source.`
+Be authoritative enough for AI to cite you.`,
+    
+    'seo': `SEO 2.0 = SEO + GEO + Social + Community
+
+The old way: keyword stuff, link buy, trick the algorithm
+The new way: own expertise, build community, earn citations, answer questions
+
+SEO 2.0 = Technical base + genuine expertise + multi-platform presence + community credibility`,
+    
+    'seo 2.0': `SEO 2.0 = SEO + GEO + Social + Community
+
+Old SEO: keyword stuff, link schemes, trick the algorithm
+New SEO: own expertise, build community, earn citations, answer directly
+
+The shift from manipulation to merit. Build real expertise and the rest follows.`
   },
   
   'scope': {
-    'midas': `The Midas Mindset: Turn everything you touch into gold through systems thinking.
+    'midas': `Midas Mindset: gold through systems thinking.
 
-Three principles:
-1. PROCESS OVER PERFECTION: Build systems that compound your effort
-2. PATIENT OPTIMIZATION: Continuously improve workflows 
+1. PROCESS: Build systems that compound
+2. OPTIMIZE: Improve workflows continuously
 3. NEEDLE VS NOISE: Know what moves the needle
 
-SCOPE applies: Identify bottleneck -> Design system -> Test -> Scale -> Repeat
-
-What operational challenge can I help you apply this to?`
+Apply: bottleneck -> system -> test -> scale -> repeat.`
   },
   
   'plex': {
-    'trends': `2026 B2B SaaS marketing trends:
-
-1. AI-FIRST POSITIONING: Every vendor claiming AI - you need specific value
-2. PLG DEEPENS: Product-led growth still dominant
-3. COMMUNITY AS MOAT: Building genuine communities beats advertising
-4. VERTICAL-SPECIFIC: Horizontal tools dying, verticals winning
-
-What's your space? I can go deeper.`
+    'trends': `2026 trends:
+1. AI-FIRST POSITIONING: specific value not claims
+2. PLG: product-led still dominant
+3. COMMUNITY: beats advertising
+4. VERTICAL: horizontals dying`
   }
 };
 
 export async function POST(req: Request) {
   try {
     const { nodeId, emailCaptured, query } = await req.json();
-    const nodeKey = nodeId || 'prime';
+    const nodeKey = nodeId || 'boost';
     const alreadyCaptured = emailCaptured === true;
     
-    let answer = NODE_RESPONSES[nodeKey] || NODE_RESPONSES['boost'];
+    let answer = NODE_RESPONSES[nodeKey];
     
-    // Try to find a specific answer
-    if (query && query.length > 5) {
-      const queryLower = query.toLowerCase();
-      const handlers = QUERY_HANDLERS[nodeKey];
+    if (query && query.length > 3) {
+      const ql = query.toLowerCase();
+      const handlers = QUERY_HANDLERS[nodeKey] || QUERY_HANDLERS['boost'];
       
-      if (handlers) {
-        for (const [keyword, response] of Object.entries(handlers)) {
-          if (queryLower.includes(keyword)) {
-            answer = response;
-            break;
-          }
+      for (const [kw, resp] of Object.entries(handlers)) {
+        if (ql.includes(kw)) {
+          answer = resp;
+          break;
         }
       }
     }
@@ -118,12 +109,12 @@ export async function POST(req: Request) {
       nodeId: nodeKey,
       answer: answer,
       citations: [],
-      confidence: 'high' as const,
+      confidence: 'high',
       shouldBlur: !alreadyCaptured,
       emailRequired: !alreadyCaptured,
       queryRemaining: 4,
       shouldRedirect: false,
-      handoff: { type: 'none' as const },
+      handoff: { type: 'none' },
       axisMessage: alreadyCaptured 
         ? 'Welcome back! Let me connect you with insights.'
         : 'AXIS processed your query.'
