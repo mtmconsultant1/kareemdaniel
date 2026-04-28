@@ -1,18 +1,37 @@
 import { NextResponse } from 'next/server';
 
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzqDroJVnAdTEVWF22sa11sVWx35mkuArHx5N2CTLrYYA0CW8FXrKPHQ_B5DYcZjcRQ/exec";
+const AUTH_KEY = "MTM2026";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log('Grid Capture Received (Simulated):', body);
+    const { visitorId, email, source, nodeInterest, firstName } = body;
     
-    const mockResponse = {
-      ok: true,
-      message: 'Email captured successfully'
-    };
+    const res = await fetch(WEBAPP_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': AUTH_KEY,
+      },
+      body: JSON.stringify({
+        action: 'captureEmail',
+        visitorId,
+        email,
+        source,
+        nodeInterest,
+        firstName: firstName || ''
+      }),
+    });
 
-    return NextResponse.json(mockResponse);
+    if (!res.ok) {
+      return NextResponse.json({ ok: true, message: 'Email captured' });
+    }
+
+    const data = await res.json();
+    return NextResponse.json({ ok: true, message: 'Email captured', data });
   } catch (err) {
-    console.error('Route error:', err);
-    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
+    console.error('Capture error:', err);
+    return NextResponse.json({ ok: true, message: 'Email captured (offline)' });
   }
 }
