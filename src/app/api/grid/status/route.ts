@@ -25,7 +25,7 @@ export async function GET() {
 
     const data = await res.json();
     return NextResponse.json(data);
-  } catch (err) {
+  } catch {
     // Return mock data on any error
     return NextResponse.json({
       gridStatus: "ACTIVE",

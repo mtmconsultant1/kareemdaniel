@@ -23,11 +23,11 @@ export default function RocketCursor() {
   const rafRef = useRef<number>(0);
   const [isInit, setIsInit] = useState(false);
 
-  const animate = useCallback(() => {
+  const animate = useCallback(function animateFrame() {
     const s = stateRef.current;
     const ctx = canvasRef.current?.getContext("2d");
     const canvas = canvasRef.current;
-    if (!ctx || !canvas) { rafRef.current = requestAnimationFrame(animate); return; }
+    if (!ctx || !canvas) { rafRef.current = requestAnimationFrame(animateFrame); return; }
 
     const dx = mouseRef.current.x - s.springX;
     const dy = mouseRef.current.y - s.springY;
@@ -93,7 +93,7 @@ export default function RocketCursor() {
       rocketRef.current.style.transform = `translate(${s.springX - 12}px, ${s.springY - 12}px) rotate(${s.angle}deg)`;
     }
 
-    rafRef.current = requestAnimationFrame(animate);
+    rafRef.current = requestAnimationFrame(animateFrame);
   }, []);
 
   useEffect(() => { setIsInit(true); }, []);

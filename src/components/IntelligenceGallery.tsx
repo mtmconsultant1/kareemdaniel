@@ -23,7 +23,7 @@ type Agent = {
   id: string;
   name: string;
   layer: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string; size?: number; style?: React.CSSProperties }>;
   desc: string;
   color: string;
 };
@@ -64,6 +64,7 @@ const AGENTS: Agent[] = [
   { id: "mega-ins", name: "MEGA-INS", layer: "Specialist", icon: Lock, desc: "Life Insurance (Example: Protect)", color: "#2196F3" },
   { id: "mega-legacy", name: "MEGA-LEGACY", layer: "Specialist", icon: Heart, desc: "End-of-Life Planning (Example: Prepare)", color: "#9C27B0" },
 ];
+const NODE_LIMIT = 5;
 
 function normalizeId(value: string) {
   return String(value || "")
@@ -83,8 +84,25 @@ function getVisitorId() {
   return id;
 }
 
+function getNodeUsageKey(visitorId: string, nodeId: string) {
+  return `mtm_grid_queries:${visitorId}:${normalizeId(nodeId)}`;
+}
+
+function getNodeQueryCount(visitorId: string, nodeId: string) {
+  if (typeof window === "undefined" || !visitorId || !nodeId) return 0;
+
+  const raw = localStorage.getItem(getNodeUsageKey(visitorId, nodeId));
+  const count = Number(raw || "0");
+  return Number.isFinite(count) ? Math.max(0, count) : 0;
+}
+
+function setNodeQueryCount(visitorId: string, nodeId: string, count: number) {
+  if (typeof window === "undefined" || !visitorId || !nodeId) return;
+  localStorage.setItem(getNodeUsageKey(visitorId, nodeId), String(Math.max(0, count)));
+}
+
 export default function IntelligenceGallery() {
-  const [systemStatus, setSystemStatus] = useState<any>(null);
+  const [systemStatus, setSystemStatus] = useState<unknown>(null);
   const [query, setQuery] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -142,6 +160,7 @@ export default function IntelligenceGallery() {
     setError(null);
     setActiveAgent(agent);
     setQuery("");
+    const usedQueries = getNodeQueryCount(visitorId, agent.id);
 
     setResponse({
       nodeId: agent.id,
@@ -150,7 +169,7 @@ export default function IntelligenceGallery() {
       confidence: "low",
       shouldBlur: false,
       emailRequired: false,
-      queryRemaining: 5,
+      queryRemaining: Math.max(NODE_LIMIT - usedQueries, 0),
       shouldRedirect: false,
       handoff: { type: "none" },
       axisMessage: "Axis is routing your query to " + agent.name,
@@ -305,18 +324,31 @@ export default function IntelligenceGallery() {
                             if (!query.trim() || !activeAgent) return;
                             setIsProcessing(true);
                             try {
+                              const nextQueryCount = getNodeQueryCount(visitorId, activeAgent.id) + 1;
                               const res = await fetch('/api/grid/query', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ nodeId: activeAgent.id, query: query.trim(), emailCaptured })
+                                body: JSON.stringify({
+                                  nodeId: activeAgent.id,
+                                  query: query.trim(),
+                                  emailCaptured,
+                                  queryCount: nextQueryCount,
+                                })
                               });
+                              if (!res.ok) {
+                                throw new Error(`Query failed: ${res.status}`);
+                              }
                               const data = await res.json();
+                              setNodeQueryCount(visitorId, activeAgent.id, nextQueryCount);
                               setResponse(data);
+                              if (data.shouldRedirect && data.redirectTarget) {
+                                setRedirectTarget(data.redirectTarget);
+                              }
                               // Only show email gate if not already captured
                               if (data.emailRequired && !emailCaptured) {
                                 setShowEmailGate(true);
                               }
-                            } catch (e) {
+                            } catch {
                               setError('Query failed. Please try again.');
                             } finally {
                               setIsProcessing(false);
@@ -428,7 +460,7 @@ export default function IntelligenceGallery() {
                               Quota reached
                             </p>
                             <p className="text-sm text-zinc-300">
-                              This node has reached its limit. You'll be softly redirected.
+                              This node has reached its limit. You&apos;ll be softly redirected.
                             </p>
                             <a
                               href={response.redirectTarget}

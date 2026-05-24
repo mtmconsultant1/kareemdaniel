@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
+const NODE_LIMIT = Number(process.env.I3C2_NODE_LIMIT || '5');
+const REDIRECT_TARGET = process.env.I3C2_REDIRECT_TARGET || 'https://mtmarmory.vercel.app';
 
 const NODE_RESPONSES: Record<string, string> = {
   'axis': `AXIS - Prompt Commander`,
@@ -87,12 +89,15 @@ Apply: bottleneck -> system -> test -> scale -> repeat.`
 
 export async function POST(req: Request) {
   try {
-    const { nodeId, emailCaptured, query } = await req.json();
+    const { nodeId, emailCaptured, query, queryCount } = await req.json();
     const nodeKey = nodeId || 'boost';
     const alreadyCaptured = emailCaptured === true;
-    
-    let answer = NODE_RESPONSES[nodeKey];
-    
+    const normalizedCount = Number.isFinite(Number(queryCount)) ? Math.max(1, Number(queryCount)) : 1;
+    const queryRemaining = Math.max(NODE_LIMIT - normalizedCount, 0);
+    const shouldRedirect = normalizedCount > NODE_LIMIT;
+
+    let answer = NODE_RESPONSES[nodeKey] || NODE_RESPONSES.boost;
+
     if (query && query.length > 3) {
       const ql = query.toLowerCase();
       const handlers = QUERY_HANDLERS[nodeKey] || QUERY_HANDLERS['boost'];
@@ -104,7 +109,11 @@ export async function POST(req: Request) {
         }
       }
     }
-    
+
+    if (shouldRedirect) {
+      answer = 'This node has reached its free query limit. Redirecting you to the MTM Armory for the next step.';
+    }
+
     const response = {
       nodeId: nodeKey,
       answer: answer,
@@ -112,8 +121,9 @@ export async function POST(req: Request) {
       confidence: 'high',
       shouldBlur: !alreadyCaptured,
       emailRequired: !alreadyCaptured,
-      queryRemaining: 4,
-      shouldRedirect: false,
+      queryRemaining,
+      shouldRedirect,
+      redirectTarget: shouldRedirect ? REDIRECT_TARGET : undefined,
       handoff: { type: 'none' },
       axisMessage: alreadyCaptured 
         ? 'Welcome back! Let me connect you with insights.'
