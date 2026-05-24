@@ -35,6 +35,20 @@ type Citation = {
   updatedAt?: string;
 };
 
+type KnowledgeHubInfo = {
+  status: "connected" | "pending";
+  urlConfigured: boolean;
+  livePulseFrequency: string;
+  bridgeConfigured?: boolean;
+  responseSource?: "notebooklm" | "fallback";
+  error?: string;
+};
+
+type GridNodeMeta = {
+  id: string;
+  knowledgeHub?: KnowledgeHubInfo;
+};
+
 type GridResponse = {
   nodeId: string;
   answer: string;
@@ -51,6 +65,8 @@ type GridResponse = {
     reason?: string;
   };
   axisMessage: string;
+  responseSource?: "notebooklm" | "fallback";
+  knowledgeHub?: KnowledgeHubInfo;
 };
 
 const AGENTS: Agent[] = [
@@ -103,6 +119,7 @@ function setNodeQueryCount(visitorId: string, nodeId: string, count: number) {
 
 export default function IntelligenceGallery() {
   const [systemStatus, setSystemStatus] = useState<unknown>(null);
+  const [nodeMeta, setNodeMeta] = useState<Record<string, GridNodeMeta>>({});
   const [query, setQuery] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -134,10 +151,24 @@ export default function IntelligenceGallery() {
 
     const fetchStatus = async () => {
       try {
-        const response = await fetch("/api/grid/status");
-        if (!response.ok) throw new Error("Bridge unreachable");
-        const data = await response.json();
-        setSystemStatus(data);
+        const [statusResponse, nodesResponse] = await Promise.all([
+          fetch("/api/grid/status"),
+          fetch("/api/grid/nodes"),
+        ]);
+
+        if (!statusResponse.ok) throw new Error("Bridge unreachable");
+        const statusData = await statusResponse.json();
+        setSystemStatus(statusData);
+
+        if (nodesResponse.ok) {
+          const nodesData = await nodesResponse.json();
+          const nodes = Array.isArray(nodesData?.nodes) ? nodesData.nodes : [];
+          setNodeMeta(
+            Object.fromEntries(
+              nodes.map((node: GridNodeMeta) => [normalizeId(node.id), node])
+            )
+          );
+        }
       } catch {
         setSystemStatus(null);
       }
@@ -173,6 +204,8 @@ export default function IntelligenceGallery() {
       shouldRedirect: false,
       handoff: { type: "none" },
       axisMessage: "Axis is routing your query to " + agent.name,
+      responseSource: "fallback",
+      knowledgeHub: nodeMeta[normalizeId(agent.id)]?.knowledgeHub,
     });
   };
 
@@ -292,6 +325,9 @@ export default function IntelligenceGallery() {
                       </p>
                       <p className="text-zinc-500 text-xs mt-1">
                         {response.queryRemaining} queries remaining
+                        {response.knowledgeHub && (
+                          <> · Hub {response.knowledgeHub.status}</>
+                        )}
                       </p>
                     </div>
 
@@ -492,13 +528,19 @@ export default function IntelligenceGallery() {
                   whileHover={{ scale: 1.02, borderColor: agent.color }}
                   className="relative p-6 bg-zinc-900/50 border border-zinc-800 rounded-xl backdrop-blur-sm group"
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <agent.icon size={28} style={{ color: agent.color }} />
+                    <div className="flex justify-between items-start mb-4">
+                      <agent.icon size={28} style={{ color: agent.color }} />
+                      {(() => {
+                        const hub = nodeMeta[normalizeId(agent.id)]?.knowledgeHub;
+                        const isHubReady = hub?.status === "connected" && hub.bridgeConfigured !== false;
+                        return (
                     <div
                       className={`w-2 h-2 rounded-full ${
-                        systemStatus ? "bg-green-500 animate-pulse" : "bg-zinc-700"
+                        systemStatus && isHubReady ? "bg-green-500 animate-pulse" : "bg-amber-500"
                       }`}
                     />
+                        );
+                      })()}
                   </div>
 
                   <h3
@@ -534,13 +576,19 @@ export default function IntelligenceGallery() {
                   whileHover={{ scale: 1.02, borderColor: agent.color }}
                   className="relative p-6 bg-zinc-900/50 border border-zinc-800 rounded-xl backdrop-blur-sm group"
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <agent.icon size={28} style={{ color: agent.color }} />
+                    <div className="flex justify-between items-start mb-4">
+                      <agent.icon size={28} style={{ color: agent.color }} />
+                      {(() => {
+                        const hub = nodeMeta[normalizeId(agent.id)]?.knowledgeHub;
+                        const isHubReady = hub?.status === "connected" && hub.bridgeConfigured !== false;
+                        return (
                     <div
                       className={`w-2 h-2 rounded-full ${
-                        systemStatus ? "bg-green-500 animate-pulse" : "bg-zinc-700"
+                        systemStatus && isHubReady ? "bg-green-500 animate-pulse" : "bg-amber-500"
                       }`}
                     />
+                        );
+                      })()}
                   </div>
 
                   <h3
@@ -576,13 +624,19 @@ export default function IntelligenceGallery() {
                   whileHover={{ scale: 1.02, borderColor: agent.color }}
                   className="relative p-6 bg-zinc-900/50 border border-zinc-800 rounded-xl backdrop-blur-sm group"
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <agent.icon size={28} style={{ color: agent.color }} />
+                    <div className="flex justify-between items-start mb-4">
+                      <agent.icon size={28} style={{ color: agent.color }} />
+                      {(() => {
+                        const hub = nodeMeta[normalizeId(agent.id)]?.knowledgeHub;
+                        const isHubReady = hub?.status === "connected" && hub.bridgeConfigured !== false;
+                        return (
                     <div
                       className={`w-2 h-2 rounded-full ${
-                        systemStatus ? "bg-green-500 animate-pulse" : "bg-zinc-700"
+                        systemStatus && isHubReady ? "bg-green-500 animate-pulse" : "bg-amber-500"
                       }`}
                     />
+                        );
+                      })()}
                   </div>
 
                   <h3
